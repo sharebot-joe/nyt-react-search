@@ -1,37 +1,43 @@
 import React, {Component} from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-/*
+
 import Books from "./pages/Books";
 import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import Nav from "./components/Nav";
-*/
+
+const API = 'https://hn.algolia.com/api/v1/search?query=';
+const DEFAULT_QUERY = 'redux';
 
 class App extends Component {
-  state = {users: []}
+  state = {hits: []}
 
   componentDidMount() {
-    fetch('/users')
-      .then(res => res.json())
-      .then(users => this.setState({ users }));
+  	fetch(API + DEFAULT_QUERY)
+  	      .then(response => response.json())
+  	      .then(data => this.setState({ hits: data.hits }));
+
+    // fetch('/users')
+    //   .then(res => res.json())
+    //   .then(users => this.setState({ users }));
   }
 
   render() {
+  	const { hits } = this.state;
     return (
-      <div className="App">
-        <h1>Users</h1>
-        {this.state.users.map(user =>
-          <div key={user.id}>{user.username}</div>
+    	<ul>
+        {hits.map(hit =>
+          <li key={hit.objectID}>
+            <a href={hit.url}>{hit.title}</a>
+          </li>
         )}
-      </div>
-    );
+      </ul>
+    )
   }
 }
 
 export default App;
 
-/* Hidden backend testing
-/*
 const App = () => (
   <Router>
     <div>
@@ -40,6 +46,10 @@ const App = () => (
         <Route exact path="/" component={Books} />
         <Route exact path="/books" component={Books} />
         <Route exact path="/books/:id" component={Detail} />
+        <Route exact path="/search" component={Books} />
+        <Route exact path="/results" component={Books} />
+        <Route exact path="/saved" component={Books} />
+        <Route exact path="/saved/:id" component={Detail} />
         <Route component={NoMatch} />
       </Switch>
     </div>
@@ -47,4 +57,3 @@ const App = () => (
 );
 
 export default App;
-*/
