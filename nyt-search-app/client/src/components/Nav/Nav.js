@@ -1,11 +1,17 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 const Nav = () => (
   <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-    {/* Alternative: Use React-router-dom's Link component so that browser doesn't refresh if user clicks <a href=>I*/}
-    <a className="navbar-brand" href="/">
-      React Reading List
-    </a>
+    <ul className="nav navbar-nav navbar-brand">
+	    <a className="" href="/">
+	      Home
+	    </a>
+      <li><Link to="/">Home</Link></li>
+      <li><Link to="/search">Search</Link></li>
+      <li><Link to="/results">Results</Link></li>
+      <li><Link to="/saved">Saved</Link></li>
+    </ul>
   </nav>
 );
 
