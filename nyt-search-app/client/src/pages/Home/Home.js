@@ -1,13 +1,14 @@
 import React, { Component } from "react";
+import { Jumbotron, Button } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
+import { Form, Input } from 'reactstrap';
+
 import DeleteBtn from "../../components/DeleteBtn";
-import Jumbotron from "../../components/Jumbotron";
 import Results from "../../components/Results";
 import Saved from "../../components/Saved";
 import API from "../../utils/API";
 import { Link } from "react-router-dom";
-import { Col, Row, Container } from "../../components/Grid";
-import { List, ListItem } from "../../components/List";
-import { Input, TextArea, FormBtn } from "../../components/Form";
+import './Home.css';
 
 class Home extends Component {
   state = {
@@ -60,18 +61,20 @@ class Home extends Component {
   render() {
     return (
       <Container fluid>
-        <Row>
-          <Col size="md-6">
-            <Jumbotron>
-              <h1>NY Times Article Search</h1>
-            </Jumbotron>
+	      <Jumbotron className="col-sm-12 col-md-8">
+	        <h1>NY Times Article Search</h1>
+	      </Jumbotron>
+        <Row className="d-flex justify-content-center">
+          <Col className="col-sm-12 col-md-8">
             <form>
+              <label for="keyword">Search Term:</label>
               <Input
                 value={this.state.keyword}
                 onChange={this.handleInputChange}
                 name="keyword"
                 placeholder="Enter a keyword (required)"
               />
+              <label for="numRetrieve">Number of Records to Retrieve:</label>
               <select name="numRetrieve" value={this.state.numRetrieve} onChange={this.handleInputChange}>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -80,27 +83,32 @@ class Home extends Component {
                   <option value="5">5</option>
                   <option value="6">6</option>
         			</select>
+        			<label for="startYear">Start Year (Optional):</label>
               <Input
 	              value={this.state.startYear}
 	              onChange={this.handleInputChange}
 	              name="startYear"
 	              placeholder=""
 	            />
+	            <label for="endYear">End Year (Optional):</label>
               <Input
 	              value={this.state.endYear}
 	              onChange={this.handleInputChange}
 	              name="endYear"
 	              placeholder=""
 	            />
-              <FormBtn
+              <Button
                 disabled={!(this.state.author && this.state.title)}
                 onClick={this.handleFormSubmit}
               >
-                Submit Book
-              </FormBtn>
+                Search Articles
+              </Button>
             </form>
           </Col>
-          <Col size="md-6 sm-12">
+        </Row>
+        <Jumbotron className="col-sm-12 col-md-8">
+        {/*<Row className="d-flex justify-content-center">
+          <Col size="md-6 sm-12">*/}
             <Results />
             {/*{this.state.books.length ? (
               <List>
@@ -118,11 +126,12 @@ class Home extends Component {
             ) : (
               <h3>No Results to Display</h3>
             )}*/}
-          </Col>
-          <Col size="md-6 sm-12">
+          {/*(</Col>
+        </Row>*/}
+        </Jumbotron>
+        <Jumbotron className="col-sm-12 col-md-8">
             <Saved />
-          </Col>
-        </Row>
+        </Jumbotron>
       </Container>
     );
   }
