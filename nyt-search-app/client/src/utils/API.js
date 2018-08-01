@@ -1,6 +1,12 @@
 import axios from "axios";
 
 export default {
+
+	// Perform search and return results
+	getResults: function(query) {
+
+    return axios.get(query)
+  },
   // Gets all books
   getSaved: function() {
     return axios.get("/api/saved");
