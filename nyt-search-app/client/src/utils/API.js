@@ -4,7 +4,7 @@ export default {
 
 	// Perform search and return results
 	getResults: function(query) {
-
+    console.log(query)
     return axios.get(query)
   },
   // Gets all books

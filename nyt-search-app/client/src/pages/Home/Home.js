@@ -64,19 +64,29 @@ class Home extends Component {
   handleFormSubmit(event) {
     event.preventDefault();
     if (this.state.keyword && this.state.numRetrieve) {
-    	console.log(this.state.keyword && this.state.numRetrieve)
     	let query = this.buildQueryURL(this.state)
       API.getResults(query)
         .then(res => {
-          // console.log(res.data.items);
+          if(!res.data.response.docs.length) {
+            console.log("No results found! Please try again!")
+            return
+          }
           this.setState({
-          	  articles: res.data.items
+          	articles: res.data.response.docs
           }, function () {
-              console.log(this.state.articles);
+            console.log(this.state.articles)
           });
         })
         .catch(function (error) {
-          console.log(error);
+          console.log("error", error)
+          // if (response.status === 404) {
+          //   return response.json()
+          // }
+          console.log("Error! ", error.message)
+          console.log("Error! ", error.config)
+          console.log("Error! ", error.request)
+          console.log("Error status: ", error.request.status)
+          console.log("Please try your search again.")
         });
     }
   };
@@ -86,23 +96,26 @@ class Home extends Component {
     var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
 
     // add the api key parameter (the one we received when we registered)
-    queryURL += "?api-key=b9f91d369ff59547cd47b931d8cbc56b:0:74623931";
+    queryURL += "?api-key=2b71d83747f1470da673042478881bdc";
 
     // grab text the user typed into the search input, add as parameter to url
     var searchTerm = this.state.keyword
     queryURL += "&q=" + searchTerm;
 
     // if the user provides a startYear, include it in the queryURL
-    var startYear = this.state.startYear
-    queryURL += "&begin_date=" + startYear + "0101";
+    if(this.state.startYear){
+      var startYear = this.state.startYear
+      queryURL += "&begin_date=" + startYear + "0101";
+    }
 
     // if the user provides an endYear, include it in the queryURL
-    var endYear = this.state.endYear
-    queryURL += "&end_date=" + endYear + "0101";
-
+    if(this.state.endYear){
+      var endYear = this.state.endYear
+      queryURL += "&end_date=" + endYear + "0101";
+    }
 
     // Logging the URL so we have access to it for troubleshooting
-    console.log("---------------\nURL: " + queryURL + "\n---------------");
+    // console.log("---------------\nURL: " + queryURL + "\n---------------");
 
     return queryURL;
   }
