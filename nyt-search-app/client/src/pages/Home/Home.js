@@ -7,7 +7,7 @@ import { Form, Input } from 'reactstrap';
 import Results from "../../components/Results";
 import Saved from "../../components/Saved";
 import API from "../../utils/API";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import './Home.css';
 
 class Home extends Component {
@@ -15,11 +15,12 @@ class Home extends Component {
     super(props);
     this.state = {
     	// value:"",
-    	articles: [],
+    	results: [],
 	    keyword: "",
 	    numRetrieve: 1,
 	    startYear: "",
-	    endYear: ""
+	    endYear: "",
+	    saved: []
     };
 
     // this.handleInputChange = this.handleInputChange.bind(this);
@@ -31,19 +32,21 @@ class Home extends Component {
     // this.loadArticles();
   }
 
-  // loadArticles = () => {
-  //   API.getArticles()
-  //     .then(res =>
-  //       this.setState({ articles: res.data })
-  //     )
-  //     .catch(err => console.log(err));
-  // };
+  loadSaved = () => {
+    API.getSaved()
+      .then(res =>
+        this.setState({ saved: res.data })
+      )
+      .catch(err => console.log(err));
+  };
 
-  // deleteArticle = id => {
-  //   API.deleteArticle(id)
-  //     .then(res => this.loadArticles())
-  //     .catch(err => console.log(err));
-  // };
+
+  saveArticle = id => {
+      API.saveArticle(id)
+        .then(res => this.loadSaved())
+        .catch(err => console.log(err));
+    };
+
 
   handleInputChange = (event) => {
   	const { name, value } = event.target;
@@ -72,20 +75,17 @@ class Home extends Component {
             return
           }
           this.setState({
-          	articles: res.data.response.docs
+          	results: res.data.response.docs
           }, function () {
-            console.log(this.state.articles)
+            console.log(this.state.results)
           });
         })
         .catch(function (error) {
-          console.log("error", error)
-          // if (response.status === 404) {
-          //   return response.json()
-          // }
+          // console.log("error", error)
           console.log("Error! ", error.message)
-          console.log("Error! ", error.config)
-          console.log("Error! ", error.request)
-          console.log("Error status: ", error.request.status)
+          // console.log("Error! ", error.config)
+          // console.log("Error! ", error.request)
+          // console.log("Error status: ", error.request.status)
           console.log("Please try your search again.")
         });
     }
@@ -128,7 +128,7 @@ class Home extends Component {
 	      </Jumbotron>
         <Row className="d-flex justify-content-center">
           <Col className="col-sm-12 col-md-8">
-            <form>
+            <Form>
               <label for="keyword">Search Term:</label>
               <Input
                 value={this.state.keyword}
@@ -165,13 +165,14 @@ class Home extends Component {
               >
                 Search Articles
               </Button>
-            </form>
+            </Form>
           </Col>
         </Row>
-        <Jumbotron className="col-sm-12 col-md-8">
+        <Results results={this.state.results}/>
+        
         {/*<Row className="d-flex justify-content-center">
           <Col size="md-6 sm-12">*/}
-            <Results results={this.state.articles}/>
+            
             {/*{this.state.books.length ? (
               <List>
                 {this.state.books.map(book => (
@@ -190,7 +191,7 @@ class Home extends Component {
             )}*/}
           {/*(</Col>
         </Row>*/}
-        </Jumbotron>
+        
         <Jumbotron className="col-sm-12 col-md-8">
             <Saved />
         </Jumbotron>

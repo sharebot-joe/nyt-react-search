@@ -1,0 +1,38 @@
+.jumbotron {
+	padding: 2rem;
+}
+.list-group {
+	margin-top: 2rem;
+}
+.articleLabel {
+	float: left;
+	max-width: 8%;
+	padding: 0 .7rem;
+	margin-top: 0;
+	margin-right: 2%;
+	background: royalblue;
+	border-radius: 5px;
+	font-size: 1rem;
+	color: #fff;
+}
+.articleHeader {
+	float: left;
+	max-width: 88%;
+}
+.articleHeadline {
+	color: #000;
+	margin-bottom: .5rem;
+	vertical-align: top;
+}
+.articleAuthor {
+	color: #000;
+	font-size: .8rem;
+	vertical-align: top;
+}
+.clearfix{
+    clear:both
+}
+
+.btn {
+	float: right;
+}
