@@ -55,6 +55,7 @@ class Home extends Component {
   	});
   	console.log(event.target.value)
   }
+ 
 
   // handleInputChange(event) {
   //   const { name, value } = event.target;
@@ -168,7 +169,7 @@ class Home extends Component {
             </Form>
           </Col>
         </Row>
-        <Results results={this.state.results}/>
+        <Results startIndex={0} endIndex={this.state.numRetrieve} data={this.state.results}/>
         
         {/*<Row className="d-flex justify-content-center">
           <Col size="md-6 sm-12">*/}
