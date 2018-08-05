@@ -1,34 +1,56 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Jumbotron, Button } from 'reactstrap';
-import { Container, Row, Col } from 'reactstrap';
-import { Form, Input } from 'reactstrap';
+import { Jumbotron, Button, Container, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
+// import Article from "../Article";
+import "./Saved.css";
 import API from "../../utils/API";
 
-class Saved extends Component {
-  state = {
-    // article: {}
-  };
-  // When this component mounts, grab the book with the _id of this.props.match.params.id
-  // e.g. localhost:3000/books/599dcb67f0f16317844583fc
-  componentDidMount() {
-    // API.getBook(this.props.match.params.id)
-    //   .then(res => this.setState({ book: res.data }))
-    //   .catch(err => console.log(err));
+
+
+class Results extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.data != nextProps.data;
   }
 
   render() {
-    return (
-      <Container fluid>
-        <Jumbotron>
-            <h1>
-              Saved Articles
-              {/*this.state.book.title} by {this.state.book.author*/}
-            </h1>
-         </Jumbotron>
-    </Container>
-    );
-  }
-}
+		// let {startIndex, endIndex, data} = this.props
+	 //  console.log("props,", this.props)
+	 //  let subset = data.slice(startIndex, endIndex)
+	 //  console.log(endIndex)
+	 //  console.log(this.props)
+	 //  console.log(subset)
 
-export default Saved;
+  	return (
+		  <Jumbotron className="col-sm-12 col-md-8">
+		    <h1>
+		      Saved Articles
+		    </h1>
+
+		    {this.props.data ? (
+		      <ListGroup>
+		        {this.props.data.map((result, index) => {
+		          return <ListGroupItem key={result._id} id={index}>
+		            <div className="articleLabel">{index + 1}</div>
+		    		    <div className="articleHeader">
+		    		      <a href={result.web_url} target="_blank"><div className="articleHeadline">{result.headline.main}</div></a>
+		    		      <div className="articleAuthor">{result.byline.original}</div>
+		    		    </div>
+		    		    <Button color="success" className="clearfix" onClick={this.props.handleBtnClick}>Clear Article</Button>
+		    	      {/*<Button color="primary" onClick={() => this.saveArticle({result._id})}>Save Article</Button>*/}
+		          </ListGroupItem>
+		        })}
+		      </ListGroup>
+		    ) : (
+		      <h3>No Saved Articles</h3>
+		    )}
+			</Jumbotron>
+		)
+  }
+};
+
+
+export default Results;

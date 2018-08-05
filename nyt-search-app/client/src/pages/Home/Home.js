@@ -2,24 +2,20 @@ import React, { Component } from "react";
 import { Jumbotron, Button } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
 import { Form, Input } from 'reactstrap';
-
-// import DeleteBtn from "../../components/DeleteBtn";
 import Results from "../../components/Results";
 import Saved from "../../components/Saved";
 import API from "../../utils/API";
-// import { Link } from "react-router-dom";
 import './Home.css';
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    	// value:"",
-    	results: [],
 	    keyword: "",
 	    numRetrieve: 1,
 	    startYear: "",
 	    endYear: "",
+	    results: [],
 	    saved: []
     };
 
@@ -42,28 +38,26 @@ class Home extends Component {
 
 
   saveArticle = id => {
-      API.saveArticle(id)
-        .then(res => this.loadSaved())
-        .catch(err => console.log(err));
-    };
+    API.saveArticle(id)
+      .then(res => this.loadSaved())
+      .catch(err => console.log(err));
+  };
 
 
   handleInputChange = (event) => {
   	const { name, value } = event.target;
+  	// console.log(event.target.value)
   	this.setState({
-  	  [name]: value
+  		[name]: value
+  	}, function () {
+  	    // console.log(this.state.keyword);
+  	    // console.log(this.state.numRetrieve);
+  	    // console.log(this.state.startYear);
+  	    // console.log(this.state.endYear);
+  	    // console.log(this.state.results);
+  	    // console.log(this.state.saved);
   	});
-  	console.log(event.target.value)
   }
- 
-
-  // handleInputChange(event) {
-  //   const { name, value } = event.target;
-  //   this.setState({
-  //     [name]: value
-  //   });
-  //   console.log(event.target.value)
-  // }
 
   handleFormSubmit(event) {
     event.preventDefault();
@@ -78,7 +72,7 @@ class Home extends Component {
           this.setState({
           	results: res.data.response.docs
           }, function () {
-            console.log(this.state.results)
+            // console.log(this.state.results)
           });
         })
         .catch(function (error) {
@@ -91,6 +85,32 @@ class Home extends Component {
         });
     }
   };
+
+  handleBtnClick = event => {
+  	console.log("button clicked!")
+    // Get the data-value of the clicked button
+    // const btnType = event.target.attributes.getNamedItem("data-value").value;
+    // // Clone this.state to the newState object
+    // // We'll modify this object and use it to set our component's state
+    // const newState = { ...this.state };
+
+    // if (btnType === "pick") {
+    //   // Set newState.match to either true or false depending on whether or not the dog likes us (1/5 chance)
+    //   newState.match = 1 === Math.floor(Math.random() * 5) + 1;
+
+    //   // Set newState.matchCount equal to its current value or its current value + 1 depending on whether the dog likes us
+    //   newState.matchCount = newState.match
+    //     ? newState.matchCount + 1
+    //     : newState.matchCount;
+    // } else {
+    //   // If we thumbs down'ed the dog, we haven't matched with it
+    //   newState.match = false;
+    // }
+    // // Replace our component's state with newState, load the next dog image
+    // this.setState(newState);
+    // this.loadNextDog();
+  };
+
 
   buildQueryURL(state) {
     // queryURL is the url we'll use to query the API
@@ -169,33 +189,8 @@ class Home extends Component {
             </Form>
           </Col>
         </Row>
-        <Results startIndex={0} endIndex={this.state.numRetrieve} data={this.state.results}/>
-        
-        {/*<Row className="d-flex justify-content-center">
-          <Col size="md-6 sm-12">*/}
-            
-            {/*{this.state.books.length ? (
-              <List>
-                {this.state.books.map(book => (
-                  <ListItem key={book._id}>
-                    <Link to={"/books/" + book._id}>
-                      <strong>
-                        {book.title} by {book.author}
-                      </strong>
-                    </Link>
-                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                  </ListItem>
-                ))}
-              </List>
-            ) : (
-              <h3>No Results to Display</h3>
-            )}*/}
-          {/*(</Col>
-        </Row>*/}
-        
-        <Jumbotron className="col-sm-12 col-md-8">
-            <Saved />
-        </Jumbotron>
+        <Results startIndex={0} endIndex={this.state.numRetrieve} data={this.state.results} handleBtnClick={this.handleBtnClick}/>
+        <Saved data={this.state.saved} handleBtnClick={this.handleBtnClick}/>
       </Container>
     );
   }

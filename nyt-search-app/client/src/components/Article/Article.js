@@ -31,7 +31,7 @@ class Article extends Component {
 		      <strong>{props.results.article.name}</strong>
 		    </h3>
 		    <h5>By {props.results.article.author}</h5>
-	      <Button color="primary" onClick={() => this.saveArticle({article._id}) >Save Article</Button>
+	      <Button color="primary" onClick={() => this.saveArticle(article._id}) >Save Article</Button>
 	    </div>
     );
   }
